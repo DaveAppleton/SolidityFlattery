@@ -102,6 +102,9 @@ var fName string
 var oName string
 
 func main() {
+	fmt.Println("Solididy File Flattener (c) David Appleton 2018")
+	fmt.Println("contact : dave@akomba.com")
+	fmt.Println("released under Apache 2.0 licence")
 	flag.StringVar(&fName, "input", "", "base file to flatten")
 	flag.StringVar(&oName, "output", "", "output file")
 	flag.Parse()
@@ -156,6 +159,11 @@ func main() {
 	}
 
 	fmt.Fprintln(w, pragma)
+
+	fmt.Fprintln(w,"// produced by the Solididy File Flattener (c) David Appleton 2018")
+	fmt.Fprintln(w,"// contact : dave@akomba.com")
+	fmt.Fprintln(w,"// released under Apache 2.0 licence")
+
 	fmt.Println("Writing output.")
 	for {
 		completed := true
