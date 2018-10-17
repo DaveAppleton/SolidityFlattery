@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -158,11 +159,15 @@ func main() {
 		}
 	}
 
+	absoluteFile, _ := filepath.Abs(fName)
+
 	fmt.Fprintln(w, pragma)
 
-	fmt.Fprintln(w,"// produced by the Solididy File Flattener (c) David Appleton 2018")
-	fmt.Fprintln(w,"// contact : dave@akomba.com")
-	fmt.Fprintln(w,"// released under Apache 2.0 licence")
+	fmt.Fprintln(w, "// produced by the Solididy File Flattener (c) David Appleton 2018")
+	fmt.Fprintln(w, "// contact : dave@akomba.com")
+	fmt.Fprintln(w, "// released under Apache 2.0 licence")
+	fmt.Fprintln(w, "// input ", absoluteFile)
+	fmt.Fprintln(w, "// flattened : ", time.Now().UTC().Format(time.RFC850))
 
 	fmt.Println("Writing output.")
 	for {
