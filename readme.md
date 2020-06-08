@@ -1,5 +1,5 @@
-FLAT
-===
+SolidityFlattery
+================
 
 Dedicated to all those who believe that the world is a disc supported on the back of four large elephants that are standing on the back of a huge tortoise.
 
@@ -21,19 +21,21 @@ Installation
 
 This is not intended as a library (no go getting required). 
 
-Just clone it and build it after importing the single dependancy which is not included here : 
-
-`> go get gopkg.in/natefinch/lumberjack.v2`
+Just clone it and build it. Use of go modules should ensure that the dependencies are met.
 
 You can build it yourself or download an executable (coming soon)
 
-built using **go v 1.10** but it would probably work with an older version if you are feeling decadent.
+built using **go v 1.14**
 
-`> go build flat.go utils.go`
+`> go build`
 
 or 
 
-`> go install  flat.go utils.go`
+`> go install`
+
+which builds and installs to $GOBIN
+
+Both of these create an executable based on your working directory name, probably SolidityFlattery :-)
 
 Usage
 ---
@@ -42,7 +44,7 @@ Assuming that you have the executable on your path :
 
 Assuming your contract is in `mainfile.sol` and you want to create `consolidated.sol`
 
-`flat -input mainfile.sol -output consolidated`
+`SolidityFlattery -input mainfile.sol -output consolidated`
 
 This creates a flattened version of mainfile.sol with all includes in the file `consolidated.sol` and creates a log called `consolidated.log`
 
@@ -58,4 +60,6 @@ Dave Appleton.
 
 * Lead Blockchain dev @ [HelloGold](https://hellogold.com)
 * Senior Consultant @ [Akomba Labs](https://akombalabs.com)
+* Smart Contracts and Go/Ethereum engine development for hire!
 * [@AppletonDave](https://twitter.com/AppletonDave) on twitter.
+
