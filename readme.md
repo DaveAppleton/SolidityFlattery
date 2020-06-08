@@ -6,11 +6,11 @@ Dedicated to all those who believe that the world is a disc supported on the bac
 Function
 --------
 
-FLAT takes a solidity file and retrieves all its dependancies and stuffs them in a single file in the correct order for it to be verified on etherscan.
+SolidityFlattery takes a solidity file and retrieves all its dependancies and stuffs them in a single file in the correct order for it to be verified on etherscan.
 
 WHY?
 -----
-Because part of the ethos of the smart contract blockchain relies upon being able to see and verify the contracts yourself. Etherscan require single files for verification. FLAT helps you create those files.
+Because part of the ethos of the smart contract blockchain relies upon being able to see and verify the contracts yourself. Etherscan require single files for verification. SolidityFlattery helps you create those files.
 
 Also - because my MacBook _hates_ **Python** and refuses to figure out how to run the version that [BLOCKCAT](https://github.com/BlockCatIO/solidity-flattener) put together.
 
