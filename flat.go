@@ -84,7 +84,7 @@ func loadAndSplitFile(fileName string) (newFiles bool, err error) {
 			}
 			thisRec.Uses[bafta] = true
 		}
-		if starts("contract", line) || starts("library", line) || starts("interface", line) {
+		if starts("contract", line) || starts("library", line) || starts("interface", line) || starts("abstract contract", line) {
 			thisRec.Code = lines[li:]
 			fmt.Println("has ", len(lines[li:]), " lines")
 			break
@@ -103,7 +103,7 @@ var fName string
 var oName string
 
 func main() {
-	fmt.Println("Solididy File Flattener (c) David Appleton 2018")
+	fmt.Println("Solididy File Flattener 1.20 (c) David Appleton 2018")
 	fmt.Println("contact : dave@akomba.com")
 	fmt.Println("released under Apache 2.0 licence")
 	flag.StringVar(&fName, "input", "", "base file to flatten")
