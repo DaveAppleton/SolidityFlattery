@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -33,6 +34,19 @@ func loadAndSplitFile(fileName string) (newFiles bool, err error) {
 	fileName = strings.Replace(fileName, ";", "", 2)       // and final semicolon
 	fileName = strings.TrimSpace(filepath.Clean(fileName)) // resolve ../ etc
 	thisPath := filepath.Dir(fileName)
+	fmt.Println("++++", thisPath)
+
+	_, err = os.Stat(thisPath)
+	if err != nil {
+		fmt.Println("err ", thisPath)
+		node, err := doWeHaveNodeModule(thisPath)
+		if err == nil {
+			fmt.Println("using ", node+"/node_modules/"+thisPath)
+			thisPath = node + "/node_modules/" + thisPath
+			fileName = node + "/node_modules/" + fileName
+		}
+	}
+
 	shortName := filepath.Base(fileName) // just the file name
 	if imports[shortName].Processed {
 		fmt.Println(shortName, " already done")
@@ -72,7 +86,9 @@ func loadAndSplitFile(fileName string) (newFiles bool, err error) {
 		}
 		if starts("import", line) {
 			noImports = false
-			afta := thisPath + "/" + after("import ", line)
+			afterImport := after("import ", line)
+
+			afta := thisPath + "/" + afterImport
 			afta = filepath.Clean(afta)
 			bafta := filepath.Base(afta)
 			if !imports[bafta].Created {
@@ -83,6 +99,7 @@ func loadAndSplitFile(fileName string) (newFiles bool, err error) {
 				fmt.Println("--> uses new file ", afta)
 			}
 			thisRec.Uses[bafta] = true
+
 		}
 		if starts("contract", line) || starts("library", line) || starts("interface", line) || starts("abstract contract", line) {
 			thisRec.Code = lines[li:]
@@ -97,6 +114,39 @@ func loadAndSplitFile(fileName string) (newFiles bool, err error) {
 		fmt.Println(shortName, " has no dependencies")
 	}
 	return
+}
+
+func findCurrentParent() (string, error) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Dir(cwd), nil
+}
+
+func findDirectoryParent(cwd string) string {
+	return filepath.Dir(cwd)
+}
+
+func doWeHaveNodeModule(path string) (dir string, err error) {
+	start, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	for {
+		nodeDir := start + "/node_modules/" + path
+		f, err := os.Stat(nodeDir)
+		if err != nil {
+			start = findDirectoryParent(start)
+		} else if f.IsDir() {
+
+			return start, nil
+
+		}
+		if len(start) < 3 {
+			return "", errors.New("cannot find node")
+		}
+	}
 }
 
 var fName string
