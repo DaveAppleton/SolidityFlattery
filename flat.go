@@ -88,17 +88,28 @@ func loadAndSplitFile(fileName string) (newFiles bool, err error) {
 			noImports = false
 			afterImport := after("import ", line)
 
-			afta := thisPath + "/" + afterImport
-			afta = filepath.Clean(afta)
-			bafta := filepath.Base(afta)
-			if !imports[bafta].Created {
-				newFiles = true
-				imports[bafta] = importRec{FullPath: afta,
-					Created: true,
-					Uses:    make(map[string]bool)}
-				fmt.Println("--> uses new file ", afta)
+			if afterImport[0] == '@' {
+				if !imports[afterImport].Created {
+					newFiles = true
+					imports[afterImport] = importRec{FullPath: afterImport,
+						Created: true,
+						Uses:    make(map[string]bool)}
+					fmt.Println("--> uses new file ", afterImport)
+				}
+				thisRec.Uses[afterImport] = true
+			} else {
+				afta := thisPath + "/" + afterImport
+				afta = filepath.Clean(afta)
+				bafta := filepath.Base(afta)
+				if !imports[bafta].Created {
+					newFiles = true
+					imports[bafta] = importRec{FullPath: afta,
+						Created: true,
+						Uses:    make(map[string]bool)}
+					fmt.Println("--> uses new file ", afta)
+				}
+				thisRec.Uses[bafta] = true
 			}
-			thisRec.Uses[bafta] = true
 
 		}
 		if starts("contract", line) || starts("library", line) || starts("interface", line) || starts("abstract contract", line) {
